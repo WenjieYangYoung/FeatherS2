@@ -1,0 +1,48 @@
+import ssl
+import socketpool
+import adafruit_minimqtt.adafruit_minimqtt as MQTT
+
+### Mqtt Topic Setup ### Match the username
+mqtt_topic = " " #Set MQTT topic
+
+# Define callback methods which are called when events occur
+def connect(mqtt_client, userdata, flags, rc):
+    # This will be called when the mqtt_client is connected successfully to the broker.
+    print("Connected to MQTT Broker")
+    print("Flags: {0}\n RC: {1}".format(flags, rc))
+
+def disconnect(mqtt_client, userdata, rc):
+    # called when the mqtt_client disconnects
+    print("Disconnected from MQTT Broker!")
+
+def publish(mqtt_client, userdata, topic, pid):
+    # This method is called when the mqtt_client publishes data to a feed.
+    print("\t Published to {0} with PID {1}".format(topic, pid))
+
+def subscribe(mqtt_client, userdata, mid, granted_qos):
+    def message(mqtt_client, userdata, message):
+        # This will be called when the mqtt_client receives data from the server.
+        print("received message: \n", message)
+    mqtt_client.on_message = message
+
+# Create a socket pool
+pool = socketpool.SocketPool(wifi.radio)
+
+# Set up a MiniMQTT Client, set broker, username and password
+mqtt_client = MQTT.MQTT(
+    #Recommended broker="broker.emqx.io", port=1883
+    socket_pool=pool,
+    ssl_context=ssl.create_default_context(),
+)
+
+# Connect callback handlers to mqtt_client
+mqtt_client.on_connect = connect
+mqtt_client.on_disconnect = disconnect
+mqtt_client.on_publish = publish
+mqtt_client.on_subscribe = subscribe
+
+print("Attempting to connect to %s" % mqtt_client.broker)
+mqtt_client.connect()
+
+print("Disconnecting from %s" % mqtt_client.broker)
+mqtt_client.disconnect()
