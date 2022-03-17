@@ -1,3 +1,4 @@
+# This code is a modified version based on the code written by Professor Kirk Martinez.
 import ssl
 import socketpool
 import adafruit_minimqtt.adafruit_minimqtt as MQTT
