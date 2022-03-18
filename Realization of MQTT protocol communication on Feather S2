@@ -45,5 +45,7 @@ mqtt_client.on_subscribe = subscribe
 print("Attempting to connect to %s" % mqtt_client.broker)
 mqtt_client.connect()
 
+### Write the code here, like the function you want the Feather S2 to realize throgh MQTT communication###
+
 print("Disconnecting from %s" % mqtt_client.broker)
 mqtt_client.disconnect()
