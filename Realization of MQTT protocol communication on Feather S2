@@ -32,6 +32,10 @@ pool = socketpool.SocketPool(wifi.radio)
 # Set up a MiniMQTT Client, set broker, username and password
 mqtt_client = MQTT.MQTT(
     #Recommended broker="broker.emqx.io", port=1883
+    #broker="broker.emqx.io",
+    #port=1883,
+    #username=" ",
+    #password=" ",
     socket_pool=pool,
     ssl_context=ssl.create_default_context(),
 )
